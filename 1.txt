@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-this is 2.txt and hello
-=======
-this is 2.txt and hello
->>>>>>> feature1
