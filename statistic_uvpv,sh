@@ -1,0 +1,45 @@
+#!/bin/sh
+
+logdir='/var/log/httpd'
+
+logfile="$logdir/access_log"
+errorlog="$logdir/error_log"
+
+y=`date +%Y`
+m=`date +%m`
+d=`date +%d`
+time=`date +%T`
+
+case $m in
+01)
+new_m='Jan';;
+02)
+new_m='Feb';;
+03)
+new_m='Mar';;
+04)
+new_m='Apr';;
+05)
+new_m='May';;
+06)
+new_m='Jun';;
+07)
+new_m='Jul';;
+08)
+new_m='Aug';;
+09)
+new_m='Sep';;
+10)
+new_m='Oct';;
+11)
+new_m='Nov';;
+12)
+new_m='Dec';;
+*)
+echo "Error: $m  is not expected" >> $errorlog
+esac
+
+uv=`grep $d/$new_m/$y $logfile|awk '{print $1}'|uniq|wc -l`
+pv=`grep $d/$new_m/$y $logfile|awk '{print $1}'|wc -l`
+
+mysql -uroot -p123456 -e "insert into xunke.uvpv(date,uv,pv,creatime) value("$y$m$d",$uv,$pv,\"$time\")"
